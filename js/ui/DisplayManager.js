@@ -69,6 +69,12 @@ class DisplayManager {
             this.processBrightnessImageForGrid(data.image, this.grid, newDimensions);
 
             console.log('Shared image processing completed for both modes');
+            
+            // Disable reveal animation so image-based graphics are immediately visible
+            if (typeof revealAnimation !== 'undefined') {
+                revealAnimation.isActive = false;
+                console.log('Reveal animation disabled for image mode');
+            }
         });
 
         this.sharedImageUploader.onImageEvent('imageCleared', (data) => {
