@@ -19,6 +19,7 @@ import sys
 from pathlib import Path
 import threading
 from time import sleep
+from datetime import datetime
 
 # Version number
 APP_VERSION = "1.2.7"
@@ -211,6 +212,10 @@ def create_video(image_files, output_path, fps=30, format='mp4'):
 @app.route('/')
 def index():
     return jsonify({'message': 'KILO Graphics Generator API', 'version': APP_VERSION})
+
+@app.route('/test')
+def test():
+    return jsonify({'status': 'API is working!', 'timestamp': str(datetime.now())})
 
 @app.route('/flask-status')
 def flask_status():
