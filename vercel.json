@@ -35,10 +35,5 @@
             "src": "/(.*)",
             "dest": "/$1"
         }
-    ],
-    "functions": {
-        "flask-server/app.py": {
-            "maxDuration": 300
-        }
-    }
+    ]
 }
