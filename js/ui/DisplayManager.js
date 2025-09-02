@@ -455,8 +455,27 @@ class DisplayManager {
             return;
         }
 
+        // Calculate grid dimensions the same way as regular image processing
+        const canvasWidth = newDimensions.width;
+        const canvasHeight = newDimensions.height;
+        
+        let gridCols = 0;
+        let gridRows = 0;
+        
+        if (grid) {
+            const cellCount = GridCalculator.calculateGridCellCount(
+                canvasWidth,
+                canvasHeight,
+                grid.rectWidth,
+                grid.rectHeight
+            );
+            gridCols = cellCount.cols;
+            gridRows = cellCount.rows;
+        }
+
         console.log('Processing brightness image for grid with dimensions:', newDimensions);
-        this.brightnessProcessor.processImageForGrid(image, grid.getCount(), grid.getCount(), newDimensions.width, newDimensions.height);
+        console.log('Brightness grid dimensions:', {gridCols, gridRows});
+        this.brightnessProcessor.processImageForGrid(image, gridCols, gridRows, newDimensions.width, newDimensions.height);
     }
 
     // Get the image processor (for use in sketch.js)
