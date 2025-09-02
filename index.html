@@ -70,6 +70,7 @@
         <p>If you can see this page, Vercel is successfully serving static files.</p>
 
         <button class="test-button" onclick="testAPI()">Test API Connection</button>
+        <button class="test-button" onclick="testHello()">Test Hello API</button>
 
         <div id="api-result" class="result">
             <h3>API Test Result:</h3>
@@ -99,6 +100,31 @@
                 resultDiv.className = 'result success';
             } catch (error) {
                 outputPre.textContent = `API Error: ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+
+        async function testHello() {
+            const resultDiv = document.getElementById('api-result');
+            const outputPre = document.getElementById('api-output');
+            
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            outputPre.textContent = 'Testing Hello API...';
+            
+            try {
+                const response = await fetch('/api/hello');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                
+                outputPre.textContent = JSON.stringify(data, null, 2);
+                resultDiv.className = 'result success';
+            } catch (error) {
+                outputPre.textContent = `Hello API Error: ${error.message}`;
                 resultDiv.className = 'result error';
             }
         }
