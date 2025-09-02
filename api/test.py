@@ -1,14 +1,12 @@
 from flask import Flask, jsonify
+from datetime import datetime
 
 app = Flask(__name__)
 
-@app.route('/')
-def hello():
-    return jsonify({'message': 'Hello from Vercel!', 'status': 'working'})
-
-@app.route('/test')
-def test():
-    return jsonify({'test': 'success', 'platform': 'vercel'})
-
-if __name__ == '__main__':
-    app.run()
+def handler(request):
+    return jsonify({
+        'test': 'API connection successful',
+        'timestamp': str(datetime.now()),
+        'status': 'working',
+        'message': 'Hello from Vercel serverless function!'
+    })
