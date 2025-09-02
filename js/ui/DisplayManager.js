@@ -73,6 +73,7 @@ class DisplayManager {
             // Disable reveal animation so image-based graphics are immediately visible
             if (typeof revealAnimation !== 'undefined') {
                 revealAnimation.isActive = false;
+                revealAnimation.hasEverCompleted = true; // Mark as completed to prevent future animations
                 console.log('Reveal animation disabled for image mode');
 
                 // Immediately reveal all rectangles in the grid
@@ -124,19 +125,27 @@ class DisplayManager {
         if (currentMode === 'noise') {
             console.log('Switching to noise mode - resetting canvas to original size');
             this.resetCanvasToOriginalSize();
-            
-            // Re-enable reveal animation for noise mode and reset rectangle visibility
-            if (typeof revealAnimation !== 'undefined') {
+
+            // Only re-enable reveal animation if it has never completed before
+            if (typeof revealAnimation !== 'undefined' && !revealAnimation.hasEverCompleted) {
                 revealAnimation.isActive = true;
                 revealAnimation.hasStarted = false;
                 revealAnimation.startTime = null;
-                
+
                 // Reset all rectangles to hidden for the reveal animation
                 if (this.grid && this.grid.rectangles) {
                     this.grid.rectangles.forEach(rectangle => {
                         rectangle.firstReveal = false;
                     });
                     console.log('Reveal animation re-enabled for noise mode - rectangles hidden for reveal');
+                }
+            } else if (typeof revealAnimation !== 'undefined' && revealAnimation.hasEverCompleted) {
+                // If reveal animation has completed before, just show all rectangles immediately
+                if (this.grid && this.grid.rectangles) {
+                    this.grid.rectangles.forEach(rectangle => {
+                        rectangle.firstReveal = true;
+                    });
+                    console.log('Reveal animation skipped - showing all rectangles immediately in noise mode');
                 }
             }
         }
@@ -164,6 +173,7 @@ class DisplayManager {
                     // Disable reveal animation and reveal all rectangles for image-based modes
                     if (typeof revealAnimation !== 'undefined') {
                         revealAnimation.isActive = false;
+                        revealAnimation.hasEverCompleted = true; // Mark as completed to prevent future animations
                         if (this.grid && this.grid.rectangles) {
                             this.grid.rectangles.forEach(rectangle => {
                                 rectangle.firstReveal = true;

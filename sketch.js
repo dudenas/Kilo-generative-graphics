@@ -10,7 +10,8 @@ let revealAnimation = {
     startTime: null,
     duration: 2000, // 4 seconds
     maxRadius: 0,
-    hasStarted: false
+    hasStarted: false,
+    hasEverCompleted: false // Track if reveal animation has ever completed
 };
 
 // Current color swatch (replaces colors.js)
@@ -349,6 +350,7 @@ function updateCircularReveal() {
     // Check if animation should end
     if (elapsed >= revealAnimation.duration) {
         revealAnimation.isActive = false;
+        revealAnimation.hasEverCompleted = true; // Mark as completed
         // Ensure all rectangles are revealed when animation completes
         grid.rectangles.forEach(rectangle => {
             rectangle.firstReveal = true;
