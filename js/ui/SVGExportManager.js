@@ -437,19 +437,21 @@ class SVGExportManager {
         this.showOverlay();
         this.setButtonActive('video-export-button', true);
 
-        // Check if Flask server is running
+        // Check if Vercel API is available
         const serverRunning = await this.checkFlaskServer();
         if (!serverRunning) {
-            const startServer = confirm(`Video conversion server is not running. 
+            const startServer = confirm(`Video conversion API is not responding. 
 
-Would you like to start it automatically?
+Would you like to try connecting?
 
 This will:
-1. Start the Flask server in the background
+1. Connect to the Vercel serverless API
 2. Capture PNG frames from your animation
-3. Convert them to MP4 using FFmpeg
+3. Attempt video conversion (may have limitations)
 
-Click OK to start the server, or Cancel to use PNG Sequence export instead.`);
+Note: Full video processing may not work on Vercel due to FFmpeg limitations.
+
+Click OK to try, or Cancel to use PNG Sequence export instead.`);
 
             if (startServer) {
                 await this.startFlaskServer();
@@ -677,60 +679,39 @@ Click OK to start the server, or Cancel to use PNG Sequence export instead.`);
         console.log('PNG frame capture completed, sending to server...');
     }
 
-    // Check if Flask server is running
+    // Check if Vercel API is working
     async checkFlaskServer() {
         try {
             const response = await fetch('/api/flask-status', {
-                method: 'GET',
-                timeout: 2000
+                method: 'GET'
             });
-            return response.ok;
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Vercel API status:', data);
+                return true;
+            }
+            return false;
         } catch (error) {
-            console.log('Flask server not running:', error.message);
+            console.log('Vercel API not responding:', error.message);
             return false;
         }
     }
 
-    // Start Flask server (via Express server API)
+    // Connect to Vercel API (always available)
     async startFlaskServer() {
         try {
-            this.showConversionProgress('Starting video conversion server...');
+            this.showConversionProgress('Connecting to video conversion API...');
 
-            // Try to start Flask server via Express API
-            const response = await fetch('/start-flask', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            const result = await response.json();
-
-            if (!response.ok || !result.success) {
-                throw new Error(result.error || 'Failed to start Flask server');
-            }
-
-            // Wait for Flask server to be ready
-            let serverStarted = false;
-            let attempts = 0;
-
-            while (!serverStarted && attempts < 20) {
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                serverStarted = await this.checkFlaskServer();
-                attempts++;
-
-                if (!serverStarted) {
-                    this.showConversionProgress(`Waiting for server... (${attempts}/20)`);
-                }
-            }
+            // Check if Vercel API is available
+            const serverStarted = await this.checkFlaskServer();
 
             if (!serverStarted) {
-                throw new Error('Video conversion server did not start within 40 seconds');
+                throw new Error('Vercel API is not responding');
             }
 
-            this.showConversionProgress('Server started successfully!');
-            this.updateVideoButtonStatus(true, '(MP4 Ready)');
-            this.showServerStatus('Video conversion server started successfully', 'success');
+            this.showConversionProgress('API connected successfully!');
+            this.updateVideoButtonStatus(true, '(API Ready)');
+            this.showServerStatus('Video conversion API connected successfully', 'success');
             return true;
 
         } catch (error) {
