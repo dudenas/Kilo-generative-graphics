@@ -1,12 +1,16 @@
-from flask import Flask, jsonify
 from datetime import datetime
 
-app = Flask(__name__)
-
 def handler(request):
-    return jsonify({
-        'test': 'API connection successful',
-        'timestamp': str(datetime.now()),
-        'status': 'working',
-        'message': 'Hello from Vercel serverless function!'
-    })
+    return {
+        'statusCode': 200,
+        'headers': {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        'body': {
+            'test': 'API connection successful',
+            'timestamp': str(datetime.now()),
+            'status': 'working',
+            'message': 'Hello from Vercel serverless function!'
+        }
+    }
