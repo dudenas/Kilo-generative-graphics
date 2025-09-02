@@ -303,8 +303,8 @@ def convert():
         except Exception as e:
             logger.error(f"Cleanup error: {str(e)}")
 
-# For Vercel deployment - expose the app directly
-# The app instance is automatically used by Vercel
+# For Vercel deployment - expose the app as 'app'
+# Vercel looks for an 'app' variable in the module
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8080))
