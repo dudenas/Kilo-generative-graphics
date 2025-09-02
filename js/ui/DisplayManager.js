@@ -74,7 +74,7 @@ class DisplayManager {
             if (typeof revealAnimation !== 'undefined') {
                 revealAnimation.isActive = false;
                 console.log('Reveal animation disabled for image mode');
-                
+
                 // Immediately reveal all rectangles in the grid
                 if (this.grid && this.grid.rectangles) {
                     this.grid.rectangles.forEach(rectangle => {
@@ -124,6 +124,21 @@ class DisplayManager {
         if (currentMode === 'noise') {
             console.log('Switching to noise mode - resetting canvas to original size');
             this.resetCanvasToOriginalSize();
+            
+            // Re-enable reveal animation for noise mode and reset rectangle visibility
+            if (typeof revealAnimation !== 'undefined') {
+                revealAnimation.isActive = true;
+                revealAnimation.hasStarted = false;
+                revealAnimation.startTime = null;
+                
+                // Reset all rectangles to hidden for the reveal animation
+                if (this.grid && this.grid.rectangles) {
+                    this.grid.rectangles.forEach(rectangle => {
+                        rectangle.firstReveal = false;
+                    });
+                    console.log('Reveal animation re-enabled for noise mode - rectangles hidden for reveal');
+                }
+            }
         }
 
         // Handle switching TO image-based modes
@@ -145,7 +160,7 @@ class DisplayManager {
                     if (currentMode === 'brightness' && !this.brightnessProcessor.hasProcessedData()) {
                         this.processBrightnessImageForGrid(image, this.grid, newDimensions);
                     }
-                    
+
                     // Disable reveal animation and reveal all rectangles for image-based modes
                     if (typeof revealAnimation !== 'undefined') {
                         revealAnimation.isActive = false;
