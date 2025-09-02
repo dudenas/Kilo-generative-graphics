@@ -1442,11 +1442,11 @@ For now, you can use PNG Sequence export instead.`);
     // Check Flask server status and update button
     async checkServerStatusAndUpdateButton() {
         try {
-            // First check Express server health
+            // First check Vercel API health
             const expressHealth = await this.checkExpressServer();
             if (!expressHealth) {
-                this.updateVideoButtonStatus(false, '(Express Server Down)');
-                this.showServerStatus('Express server not responding', 'error');
+                this.updateVideoButtonStatus(false, '(API Unavailable)');
+                this.showServerStatus('Vercel API not responding', 'error');
                 return;
             }
 
@@ -1468,15 +1468,13 @@ For now, you can use PNG Sequence export instead.`);
         }
     }
 
-    // Check Express server health
+    // Check Vercel API health
     async checkExpressServer() {
         try {
-            const response = await fetch('/health', {
-                timeout: 2000
-            });
+            const response = await fetch('/api/flask-status');
             return response.ok;
         } catch (error) {
-            console.warn('Express server health check failed:', error);
+            console.warn('Vercel API health check failed:', error);
             return false;
         }
     }
