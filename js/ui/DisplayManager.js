@@ -458,12 +458,12 @@ class DisplayManager {
         // Calculate grid dimensions the same way as regular image processing
         const canvasWidth = newDimensions.width;
         const canvasHeight = newDimensions.height;
-        
+
         let gridCols = 0;
         let gridRows = 0;
-        
+
         if (grid) {
-            const cellCount = GridCalculator.calculateGridCellCount(
+            const cellCount = GridCalculator.calculateCellCount(
                 canvasWidth,
                 canvasHeight,
                 grid.rectWidth,
@@ -474,7 +474,10 @@ class DisplayManager {
         }
 
         console.log('Processing brightness image for grid with dimensions:', newDimensions);
-        console.log('Brightness grid dimensions:', {gridCols, gridRows});
+        console.log('Brightness grid dimensions:', {
+            gridCols,
+            gridRows
+        });
         this.brightnessProcessor.processImageForGrid(image, gridCols, gridRows, newDimensions.width, newDimensions.height);
     }
 
