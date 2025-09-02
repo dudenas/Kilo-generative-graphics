@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KILO Graphics Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .test-button {
+            background: #0070f3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🎨 KILO Graphics Generator - Test Page</h1>
+    <p>If you can see this, the static files are working!</p>
+
+    <button class="test-button" onclick="testAPI()">Test API Connection</button>
+
+    <div id="api-result" style="margin-top: 20px; padding: 20px; border: 1px solid #ccc; display: none;">
+        <h3>API Test Result:</h3>
+        <pre id="api-output"></pre>
+    </div>
+
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('api-result');
+            const outputPre = document.getElementById('api-output');
+
+            try {
+                resultDiv.style.display = 'block';
+                outputPre.textContent = 'Testing API...';
+
+                const response = await fetch('/api/test');
+                const data = await response.json();
+
+                outputPre.textContent = JSON.stringify(data, null, 2);
+                resultDiv.style.backgroundColor = '#d4edda';
+                resultDiv.style.borderColor = '#c3e6cb';
+            } catch (error) {
+                outputPre.textContent = 'API Error: ' + error.message;
+                resultDiv.style.backgroundColor = '#f8d7da';
+                resultDiv.style.borderColor = '#f5c6cb';
+            }
+        }
+    </script>
+</body>
+
+</html>
