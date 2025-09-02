@@ -298,9 +298,8 @@ def convert():
         except Exception as e:
             logger.error(f"Cleanup error: {str(e)}")
 
-# For Vercel deployment
-def handler(request, context):
-    return app(request.environ, lambda status, headers: None)
+# For Vercel deployment - expose the app directly
+# The app instance is automatically used by Vercel
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8080))
