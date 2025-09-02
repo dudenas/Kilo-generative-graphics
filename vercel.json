@@ -1,0 +1,44 @@
+{
+    "version": 2,
+    "builds": [{
+        "src": "flask-server/app.py",
+        "use": "@vercel/python",
+        "config": {
+            "maxLambdaSize": "50mb"
+        }
+    }],
+    "routes": [{
+            "src": "/api/(.*)",
+            "dest": "/flask-server/app.py"
+        },
+        {
+            "src": "/js/(.*)",
+            "dest": "/js/$1"
+        },
+        {
+            "src": "/resources/(.*)",
+            "dest": "/resources/$1"
+        },
+        {
+            "src": "/style.css",
+            "dest": "/style.css"
+        },
+        {
+            "src": "/sketch.js",
+            "dest": "/sketch.js"
+        },
+        {
+            "src": "/",
+            "dest": "/index.html"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/$1"
+        }
+    ],
+    "functions": {
+        "flask-server/app.py": {
+            "maxDuration": 300
+        }
+    }
+}

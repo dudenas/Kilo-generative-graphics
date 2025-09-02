@@ -680,7 +680,7 @@ Click OK to start the server, or Cancel to use PNG Sequence export instead.`);
     // Check if Flask server is running
     async checkFlaskServer() {
         try {
-            const response = await fetch('/flask-status', {
+            const response = await fetch('/api/flask-status', {
                 method: 'GET',
                 timeout: 2000
             });
@@ -776,7 +776,7 @@ Click OK to start the server, or Cancel to use PNG Sequence export instead.`);
             this.showConversionProgress('Uploading frames to server...');
 
             // Start upload and progress monitoring in parallel
-            const uploadPromise = this.uploadWithProgress('/convert', formData);
+            const uploadPromise = this.uploadWithProgress('/api/convert', formData);
 
             // Give upload a moment to start, then begin progress monitoring
             setTimeout(() => {
@@ -834,7 +834,7 @@ Click OK to start the server, or Cancel to use PNG Sequence export instead.`);
             console.log('Starting progress monitoring...');
 
             while (progress < 100) {
-                const response = await fetch('/progress');
+                const response = await fetch('/api/progress');
                 if (response.ok) {
                     const data = await response.json();
                     progress = data.progress;
