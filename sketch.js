@@ -16,8 +16,8 @@ let revealAnimation = {
 
 // Current color swatch (replaces colors.js)
 let currentSwatch = {
-    background: [255, 255, 255], // Default: white background (#FFFFFF)
-    graphics: [63, 244, 120] // Default: green graphics (#3FF478)
+    background: [63, 244, 120], // Default: green background (#3FF478)
+    graphics: [230, 243, 219] // Default: light sage graphics (#E6F3DB)
 };
 
 // Utility function to convert hex color to RGB array
