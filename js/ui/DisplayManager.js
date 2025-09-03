@@ -123,7 +123,7 @@ class DisplayManager {
 
         // Handle switching TO noise mode - reset canvas to original size
         if (currentMode === 'noise') {
-            console.log('Switching to noise mode - resetting canvas to original size');
+            console.log('Switching to pattern mode - resetting canvas to original size');
             this.resetCanvasToOriginalSize();
 
             // Only re-enable reveal animation if it has never completed before
@@ -137,7 +137,7 @@ class DisplayManager {
                     this.grid.rectangles.forEach(rectangle => {
                         rectangle.firstReveal = false;
                     });
-                    console.log('Reveal animation re-enabled for noise mode - rectangles hidden for reveal');
+                    console.log('Reveal animation re-enabled for pattern mode - rectangles hidden for reveal');
                 }
             } else if (typeof revealAnimation !== 'undefined' && revealAnimation.hasEverCompleted) {
                 // If reveal animation has completed before, just show all rectangles immediately

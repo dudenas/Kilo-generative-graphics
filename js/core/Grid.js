@@ -40,6 +40,9 @@ class Grid {
         const w = canvasWidth !== null ? canvasWidth : width;
         const h = canvasHeight !== null ? canvasHeight : height;
 
+        // Check if reveal animation has ever completed (global variable from sketch.js)
+        const shouldRevealAll = typeof revealAnimation !== 'undefined' && revealAnimation.hasEverCompleted;
+
         // Get grid bounds from calculator - pass current zoom for proper coverage
         const bounds = GridCalculator.calculateGridBounds(
             w, h,
@@ -66,6 +69,12 @@ class Grid {
                         (rectCenterX - centerX) * (rectCenterX - centerX) +
                         (rectCenterY - centerY) * (rectCenterY - centerY)
                     );
+
+                    // If reveal animation has completed, immediately reveal all rectangles
+                    // This prevents graphics from disappearing when zoom changes
+                    if (shouldRevealAll) {
+                        rectangle.firstReveal = true;
+                    }
 
                     this.rectangles.push(rectangle);
                 }
