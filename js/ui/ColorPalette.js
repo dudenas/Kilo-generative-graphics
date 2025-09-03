@@ -1,7 +1,7 @@
 // Handles color palette selection and management
 class ColorPalette {
     constructor() {
-        this.currentPaletteIndex = 0;
+        this.currentPaletteIndex = 6;
         this.callbacks = {};
 
         // Define color palettes [background, graphics] - 21 total
@@ -40,7 +40,7 @@ class ColorPalette {
         }
 
         this.createPaletteSwatches();
-        this.selectPalette(0); // Select first palette by default
+        this.selectPalette(6); // Select green background with light sage graphics by default
     }
 
     createPaletteSwatches() {
